@@ -14,7 +14,7 @@ class PDF(FPDF):
     def footer(self):
         self.set_y(-15)
         self.set_font('Arial', 'I', 8)
-        self.cell(0, 10, f'@Oticanewlook', 0, 0, 'C')
+        self.cell(0, 10, f'@_Oticanewlook', 0, 0, 'C')
 
 def iniciar_historico_cliente():
     layout = [
@@ -89,12 +89,13 @@ def gerar_pdf_pedido(pedido):
     pdf.add_page()
 
     # Informações do laboratório
-    pdf.image('logo.png', x=10, y=pdf.get_y(), w=15)  # Inserir logo
+    pdf.image('logo.png', x=10, y=pdf.get_y(), w=25)  # Inserir logo
     pdf.set_font('Arial', 'B', 8)
 
     # Espaço antes de iniciar os elementos
     wpp_text = '81996615539'
-    inst_text = '@oticanewlook'
+    inst_text = '@_oticanewlook'
+    tele_text = '8132048009'
     icon_width = 5  # largura das imagens
     icon_text_padding = 2  # espaço entre a imagem e o texto
     icon_y_offset = 7.5  # deslocamento vertical das imagens
@@ -103,6 +104,8 @@ def gerar_pdf_pedido(pedido):
                 10 +  # espaço entre WhatsApp e Instagram
                 icon_width + icon_text_padding + pdf.get_string_width(inst_text) +
                 10 +  # espaço entre Instagram e número da OS
+                icon_width + icon_text_padding + pdf.get_string_width(tele_text) +
+                10 +
                 pdf.get_string_width(f'OS: {pedido["id"]}'))
 
     # Centralização dos contatos (whatsapp e instagram)
@@ -122,6 +125,15 @@ def gerar_pdf_pedido(pedido):
     pdf.image('inst.png', x=pdf.get_x(), y=y_start + icon_y_offset, w=icon_width)
     pdf.set_x(pdf.get_x() + icon_width + icon_text_padding)
     pdf.cell(pdf.get_string_width(inst_text), 20, inst_text, 0, 0, 'L')
+
+    pdf.set_x(pdf.get_x() + 7)
+
+    pdf.image('tele.png', x=pdf.get_x(), y=y_start + icon_y_offset, w=icon_width)
+    pdf.set_x(pdf.get_x() + icon_width + icon_text_padding)
+    pdf.cell(pdf.get_string_width(tele_text), 20, tele_text, 0, 0, 'L')
+
+    pdf.set_x(pdf.get_x() + 5)
+
 
     # Número da OS
     pdf.cell(0, 15, f'OS: {pedido["id"]}', 0, 1, 'R')  # Adiciona nova linha após o número da OS
@@ -203,12 +215,14 @@ def gerar_pdf_pedido(pedido):
     pdf.ln(5)
 
     # Informações do laboratório
-    pdf.image('logo.png', x=10, y=pdf.get_y(), w=15)  # Inserir logo
+    pdf.image('logo.png', x=10, y=pdf.get_y(), w=25)  # Inserir logo
     pdf.set_font('Arial', 'B', 8)
 
     # Espaço antes de iniciar os elementos
     wpp_text = '81996615539'
-    inst_text = '@oticanewlook'
+    inst_text = '@_oticanewlook'
+    tele_text = '8132048009'
+
     icon_width = 5  # largura das imagens
     icon_text_padding = 2  # espaço entre a imagem e o texto
     icon_y_offset = 7.5  # deslocamento vertical das imagens
@@ -217,6 +231,8 @@ def gerar_pdf_pedido(pedido):
                 10 +  # espaço entre WhatsApp e Instagram
                 icon_width + icon_text_padding + pdf.get_string_width(inst_text) +
                 10 +  # espaço entre Instagram e número da OS
+                    icon_width + icon_text_padding + pdf.get_string_width(tele_text) +
+                10 +
                 pdf.get_string_width(f'OS: {pedido["id"]}'))
 
     # Centralização dos contatos (whatsapp e instagram)
@@ -236,6 +252,12 @@ def gerar_pdf_pedido(pedido):
     pdf.image('inst.png', x=pdf.get_x(), y=y_start + icon_y_offset, w=icon_width)
     pdf.set_x(pdf.get_x() + icon_width + icon_text_padding)
     pdf.cell(pdf.get_string_width(inst_text), 20, inst_text, 0, 0, 'L')
+
+    pdf.set_x(pdf.get_x() + 7)
+
+    pdf.image('tele.png', x=pdf.get_x(), y=y_start + icon_y_offset, w=icon_width)
+    pdf.set_x(pdf.get_x() + icon_width + icon_text_padding)
+    pdf.cell(pdf.get_string_width(tele_text), 20, tele_text, 0, 0, 'L')
 
     # Número da OS
     pdf.cell(0, 15, f'OS: {pedido["id"]}', 0, 1, 'R')  # Adiciona nova linha após o número da OS

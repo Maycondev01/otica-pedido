@@ -14,7 +14,7 @@ def mostrar_tela_login():
     sg.theme('DarkPurple4')  # Escolhe um tema para a interface gráfica
 
     layout = [
-        [sg.Image('logo.png')],
+        [sg.Image('logoint.png')],
         [sg.Text('Login'), sg.Input(key='login')],
         [sg.Text('Senha'), sg.Input(key='senha', password_char='*')],
         [sg.Button('Entrar'), sg.Button('Cancelar')]
