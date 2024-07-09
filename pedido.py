@@ -2,6 +2,8 @@ import PySimpleGUI as sg
 import pandas as pd
 from datetime import datetime
 from fpdf import FPDF
+from historico_cliente import iniciar_historico_cliente
+
 
 # Função para carregar dados do Excel
 def carregar_pedidos():
@@ -77,13 +79,17 @@ def layout_pedido(values=None):
 # Função para iniciar o sistema com menu
 def iniciar_sistema():
     layout = [
-        [sg.Button('Criar Pedido')],
-        [sg.Button('Editar Pedido')],
-        [sg.Button('Deletar Pedido')],
-        [sg.Button('Imprimir Pedido')],
-        [sg.Button('Sair')]
+        [sg.Button('Criar Pedido', size=(25,2))],
+        [sg.Button('Editar Pedido', size=(25,2))],
+        [sg.Button('Deletar Pedido', size=(25,2))],
+        [sg.Button('Imprimir Pedido', size=(25,2))],
+        [sg.Button("Histórico do Cliente", size=(25,2))],
+        [sg.Button('Sair', size=(25,2))]
     ]
-    window = sg.Window('Sistema de Pedidos', layout)
+
+    screen_resolution = sg.Window.get_screen_size()
+    window = sg.Window('Sistema de Pedidos', layout, size=screen_resolution, element_justification='c')
+
 
     while True:
         event, _ = window.read()
@@ -95,6 +101,8 @@ def iniciar_sistema():
             deletar_pedido()
         elif event == 'Imprimir Pedido':
             imprimir_pedido()
+        elif event == 'Histórico do Cliente':
+            iniciar_historico_cliente()
         elif event == sg.WIN_CLOSED or event == 'Sair':
             break
 
@@ -350,33 +358,6 @@ def gerar_pdf_estilizado(pedido):
 
     # Espaço após o texto da garantia
     pdf.ln(5)
-
-    """
-        # Define a posição inicial e dimensões da caixa para o texto de garantia
-    x = 10
-    y = 10
-    largura_caixa = pdf.w - 20  # Largura disponível na página menos as margens
-    altura_caixa = 52
-
-    # Desenha a caixa com bordas simples
-    pdf.set_fill_color(230, 230, 230)  # Cor de fundo da caixa
-    pdf.set_draw_color(100, 100, 100)  # Cor da borda da caixa
-    pdf.rect(x, y, largura_caixa, altura_caixa, 'FD')
-
-    # Configurações para o texto dentro da caixa
-    pdf.set_xy(x + 5, y + 5)  # Posiciona o texto dentro da caixa
-    pdf.set_font('Arial', 'I', 8)  # Define a fonte e tamanho
-
-    # Ajuste o espaçamento entre as linhas
-    cell_height = 6  # Altura da célula para controlar o espaçamento entre linhas
-    pdf.multi_cell(largura_caixa - 10, cell_height, garantia_texto, 0, 'L', fill=False)
-
-    # Espaço após o texto da garantia
-    pdf.ln(5)
-
-    """ 
-
-
 
     # Garantia
     pdf.cell(0, 8, "Assinatura do Cliente:", 0, 1, 'C')
