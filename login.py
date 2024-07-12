@@ -3,8 +3,19 @@ import pandas as pd
 
 # Função para verificar login
 def verificar_login(login, senha):
-    df_acessos = pd.read_excel('acessos.xlsx')  # Carrega o arquivo de acessos (login e senha)
-    if login in df_acessos['login'].values and senha in df_acessos['senha'].values:
+    # Carregar dados da tabela 'acessos' do arquivo Excel
+    try:
+        df_acessos = pd.read_excel('acessos.xlsx', sheet_name='acessos', dtype=str)
+        df_acessos['login'] = df_acessos['login'].astype(str).str.strip()
+        df_acessos['senha'] = df_acessos['senha'].astype(str).str.strip()
+    except Exception as e:
+        print(f"Erro ao ler o arquivo Excel: {e}")
+        return False
+
+    # Verificar se o login e a senha correspondem a uma linha no DataFrame
+    usuario_valido = df_acessos[(df_acessos['login'] == login) & (df_acessos['senha'] == senha)]
+
+    if not usuario_valido.empty:
         return True
     else:
         return False
@@ -17,7 +28,7 @@ def mostrar_tela_login():
         [sg.Image('logoint.png')],
         [sg.Text('Login'), sg.Input(key='login')],
         [sg.Text('Senha'), sg.Input(key='senha', password_char='*')],
-        [sg.Button('Entrar'), sg.Button('Cancelar')]
+        [sg.Button('Entrar', bind_return_key=True), sg.Button('Cancelar')]
     ]
 
     window = sg.Window('Login', layout, element_justification='center')
@@ -31,11 +42,10 @@ def mostrar_tela_login():
             login = values['login']
             senha = values['senha']
             if verificar_login(login, senha):
-                sg.popup('Login realizado com sucesso!')
                 window.close()
                 return True
             else:
-                sg.popup_error('Login ou senha incorretos. Tente novamente.')
+                sg.popup_error('Login ou senha incorretos. Tente novamente.', title="Erro", keep_on_top=True, button_type=5)
 
     window.close()
     return False
@@ -47,4 +57,4 @@ def iniciar_login():
 # Execução do login (para testes)
 if __name__ == '__main__':
     if iniciar_login():
-        sg.popup('Login bem-sucedido! Agora, o sistema de pedidos será iniciado.')
+        print('Login bem-sucedido! Agora, o sistema de pedidos será iniciado.')
